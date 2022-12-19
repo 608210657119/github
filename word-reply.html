@@ -1,17 +1,66 @@
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>끝말잇기</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>끝말잇기</title>
 </head>
+
 <body>
-    <div><span id = "order">1</span> 번째 참가자</div>
-    <div>제시어:<span id = "word">1</span> 번째 참가자</div>
-    <input type="text">
-    <button>입력</button>
-    <script>
-        
-    </script>
+<div><span id="order">1</span> 번째 참가자</div>
+<div>제시어:<span id="word">1</span> 번째 참가자</div>
+<input type="text">
+<button>입력</button>
+<script>
+const number = parseInt(prompt("몇 명이 참가하나요?"), 10);
+const $button = document.querySelector('button');
+const $input = document.querySelector('input');
+const $word = document.querySelector('#word');
+const $order = document.querySelector('#order');
+let word;
+let newword;
+
+// const number = parseInt( prompt("몇 명이 참가하나요?"), 10);
+// const yesorNo = confirm('맞나요?');
+
+// document.querySelector('input').addEventListener('input',(event) =>{
+//   console.log('글자입력', event.target.value);
+// });
+
+const onClickButton = () => {
+if (!word) {
+word = newword;
+$word.textContent = word;
+$input.value = '';
+
+const order = number($order.textContent);
+if (order + 1 > number) {
+  $ordef.textContent = 1;
+} else {
+  $order.textContent = order + 1;
+}
+$input.value = '';
+$input.focus();
+} else {
+if (word[word.length - 1] === newword[0]) {
+  word = newword;
+  $word.textContent = word;
+  $input.value = '';
+
+}
+}
+};
+const onInput = (event) => {
+newword = event.target.value;
+}
+// document.querySelector('button').addEventListener('click',onClick);
+
+$button.addEventListener('click', onClickButton);
+$input.addEventListener('input', onInput);
+
+
+</script>
 </body>
+
 </html>
