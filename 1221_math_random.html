@@ -51,18 +51,39 @@
 
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
-            // const value = $input.value;
-            const value = event.target.value[0];
-            // $input.value = '';
-            event.target.value[0] = '';
-            checkInput(value);
-            if (checkInput(value)){
-                tries.push(value);
-            }else {
-
+            const value = $input.value;
+            // const value = event.target.value[0];
+            $input.value = '';
+            // event.target.value[0] = '';
+            if (!checkInput(value)) {
+                return;
             }
-        });
+            if (answer.join('') === value) {
+                $logs.textContent = '홈런';
+                return;
+            }
+            if (tries.length >= 9) {
+                const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+                $logs.appendChild(message);
+                return;
+            }
 
+            let strike = 0;
+            let ball = 0;
+            for (let i = 0; i < number.length; i++) {
+                const index = value.indexOf(answer[i]);
+
+                if (index > -1) { // 일치하는 숫자 발견
+                    if (index === i) { //자릿수도 같음
+                        strike += 1;
+                    } else { //숫자만 같음.
+                        ball += 1;
+                    }
+                }
+            }
+            $logs.append(`${value}: ${strike} 스트라이크 ${ball} 볼`, document.createElement('br'));
+            tries.push(value);
+        });
     </script>
 </body>
 
