@@ -12,7 +12,7 @@
             border-radius: 20px;
             width: 40px;
             height: 40px;
-            line-height: 20px;
+            line-height: 40px;
             font-size: 20px;
             text-align: center;
             margin-right: 20px;
@@ -40,47 +40,36 @@
         const $result = document.querySelector('#result');
         const $bonus = document.querySelector('#bonus');
 
+        function colorize(number, $tag) {
+            if (number < 10) {
+                $tag.style.backgroundColor = 'red';
+                $tag.style.color = 'white';
+            } else if (number < 20){
+                $tag.style.backgroundColor = 'orange';
+                $tag.style.color = 'white';
+            } else if (number < 30){
+                $tag.style.backgroundColor = 'yellow';
+            } else if (number < 40){
+                $tag.style.backgroundColor = 'blue';
+                $tag.style.color = 'white';
+            } else {
+                $tag.style.backgroundColor = 'green';
+                $tag.style.color = 'white';
+            } 
+        }
+
+
         const showBall = (number, $target) => {
             const $ball = document.createElement(`div`);
             $ball.className = 'ball';
+            colorize(number, $ball);
             $ball.textContent = number;
             $target.appendChild($ball);
         };
-
-
-        // setTimeout(() => {
-        //     const $ball = document.createElement(`div`);
-        //     $ball.className = 'ball';
-        //     $ball.textContent = winBalls[0];
-        //     $result.appendChild($ball);
-        // }, 1000);
-
-
-        // setTimeout(() => {
-        //     showBall(winBalls[0], $result);
-        // }, 1000);
-        // setTimeout(() => {
-        //     showBall(winBalls[1], $result);
-        // }, 2000);
-        // setTimeout(() => {
-        //     showBall(winBalls[2], $result);
-        // }, 3000);
-        // setTimeout(() => {
-        //     showBall(winBalls[3], $result);
-        // }, 4000);
-        // setTimeout(() => {
-        //     showBall(winBalls[4], $result);
-        // }, 5000);
-        // setTimeout(() => {
-        //     showBall(winBalls[5], $result);
-        // }, 6000);
-        // setTimeout(() => {
-        //     showBall(winBalls[6], $result);
-        // }, 7000);
         for (let i = 0; i < 6; i++) {
             setTimeout(() => {
                 showBall(winBalls[i], $result);
-            }, (i + 1) * 1000 );
+            }, (i + 1) * 1000);
         };
 
         setTimeout(() => {

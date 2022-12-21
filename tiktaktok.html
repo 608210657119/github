@@ -1,0 +1,177 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>틱택토</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid black;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    // const arr = [1,2,3,4,5];
+    // const one = arr[0];
+    // const two = arr[1];
+    // const three = arr[2];
+    // const four = arr[3];
+    // const five = arr[4];
+    // const [one,,three,,five] = arr;
+
+    const { body } = document;
+    // const body = document.body;
+    // const body = document.createElement;
+
+    const $table = document.createElement('table');
+    const $result = document.createElement('div');
+    const rows = [];
+    let turn = 'o';
+
+    // const data = [];
+    // for (let i = 0; i < 3; i++) {
+    //   data.push([]);
+    // }
+
+    const checkWinner = (target) => {
+      // let rowIndex; 아래구문으로 대체
+      const rowIndex = target.parentNode.rowIndex;
+      // let cellIndex; 아래대체
+      const cellIndex = target.cellIndex;
+      // 해당 셀의 위치를 알기 때문에 아래구문 주석 가능 
+      // rows.forEach((row, ri) => {
+      //   row.forEach((cell, ci) => {
+      //     if (cell === target) {
+      //       rowIndex = ri;
+      //       cellIndex = ci;
+      //     }
+      //   });
+      // });
+      let hasWinner = false;
+      //가로줄 검사
+      if (
+        rows[rowIndex][0].textContent === turn &&
+        rows[rowIndex][1].textContent === turn &&
+        rows[rowIndex][2].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      //세로줄 검사
+      if (
+        rows[0][cellIndex].textContent === turn &&
+        rows[1][cellIndex].textContent === turn &&
+        rows[2][cellIndex].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      // 대각선 검사
+      if (
+        rows[0][0].textContent === turn &&
+        rows[1][1].textContent === turn &&
+        rows[2][2].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      if (
+        rows[0][2].textContent === turn &&
+        rows[1][1].textContent === turn &&
+        rows[2][0].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      return hasWinner;
+    };
+
+    let clickable = true;
+    const callback = (event) => {
+      // if (event.target.textContent) return;
+
+      if (event.target.textContent !== '') {
+        // event.target.textContent = turn;
+        console.log('빈칸이 아닙니다');
+        return;
+      }
+      console.log('빈칸입니다.');
+      event.target.textContent = turn;
+      //승부판단하기
+      if (checkWinner(event.target)) {
+        $result.textContent = `${turn}님이 승리!`;
+        $table.removeEventListener('click', callback);
+        return;
+      };
+      //무승부 검사
+      let draw = true;
+      rows.forEach((row) => {
+        row.forEach((cell) => {
+          if (!cell.textContent) {
+            draw = false;
+          }
+        });
+      });
+      if (draw) {
+        $result.textContent = '무승부';
+        return;
+      }
+      turn = (turn === 'o' ? 'x' : 'o');
+      // if (turn === 'o') {
+      //   turn = 'x';
+      // } else if (turn === 'x') {
+      //   turn = 'o';
+      // }
+
+      if (turn === 'x') {
+        clickable = false;
+        const emptyCells = rows.flat().filter((v) => !v.textContent);
+        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        randomCell.textContent = 'x';
+        clickable = true;
+        const hasWinner = checkWinner(randomCell);
+        // 승지가 있으면 
+        if (hasWinner) {
+          $result.textContent = `${turn} 님의 승리!`;
+          $table.removeEventListener('click', callback)
+          return;
+        }
+        // 승자가 없으면\
+        const draw = rows.flat().every((cell) => cell.textContent);
+        if (draw) {
+          $result.textContent = '무승부';
+          return;
+        }
+        trun = turn === 'o' ? 'x' : 'o';
+      }
+
+    };
+
+    for (let i = 0; i < 3; i++) {
+      const $tr = document.createElement('tr');
+      const cells = [];
+      for (let j = 0; j < 3; j++) {
+        const $td = document.createElement('td');
+        cells.push($td);
+        $td.addEventListener('click', callback);
+        // console.log('clicked');
+
+        $tr.append($td);
+      }
+      rows.push(cells);
+      $table.append($tr);
+      // }
+    };
+    $table.addEventListener('click', callback);
+    body.append($table);
+    body.append($result);
+  </script>
+</body>
+
+</html>
